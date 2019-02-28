@@ -31,13 +31,13 @@ app.use(bodyParser.json());
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: 'maribel.kuphal46@ethereal.email',
-        pass: 'UwAJhY8MxBSSHxv4dg'
+        user: 'pietro.hand27@ethereal.email',
+        pass: 'CweD68jDktWrdH3jGg'
     }
 });
 
        var mailOptions = {
-       from: 'maribel.kuphal46@ethereal.email',
+       from: 'pietro.hand27@ethereal.email',
        to: 'sanath@gmail.com',
        subject: "HELLO",
        html: req.body.message,
@@ -62,7 +62,7 @@ app.get('/SMS', function(req, res) {
   var pno = req.param('pno');
   sendSMS(name,date,amount,pno);
 });
-function sendSMS(name,date,amount,pno);{
+function sendSMS(name,date,amount,pno){
 let body = "Hello";
 body = "Dear " + name + " Your outstanding amount is Rs " + amount + "and the due date was " + date + "Please pay back at the earliest to avoid further issues";
 client.messages
@@ -78,7 +78,7 @@ app.get('/whatsapp', function(req, res) {
   var pno = req.param('pno');
   sendWhatsapp(name,date,amount,pno);
 });
-function sendWhatsapp(name,date,amount,pno);{
+function sendWhatsapp(name,date,amount,pno){
   var url = 'https://foo.chat-api.com/message?token=83763g87x';
   let body = "Hello";
   body = "Dear " + name + " Your outstanding amount is Rs " + amount + "and the due date was " + date + "Please pay back at the earliest to avoid further issues";
@@ -145,7 +145,7 @@ app.get('/payment', function(req, res) {
   let pno = req.param('pno');
   let info = req.param('linfo');
   let tid = req.param('tid');
-  let url = "www.google.com"
+  payumoney.isProdMode(true); // production = true, test = false
   var paymentData = {
       productinfo: info,
       txnid: tid,
@@ -162,43 +162,15 @@ app.get('/payment', function(req, res) {
   payumoney.makePayment(paymentData, function(error, response) {
     if (error) {
       // Some error
-      console.log(error)
     } else {
       // Payment redirection link
-      console.log(response);
       require("openurl").open(response)
-      successPayment(req: express.Request, res: express.Response, next: any): void {
-  try {
-    console.log('payment success body : '+ JSON.stringify(req.body));
-    let redirectUrl = 'http:localhost:8080/payment/success';
-    res.redirect(redirectUrl);
-  } catch(e) {
-    next(new CostControllException(e.message,e.stack));
-  }
-}
+      console.log(response);
     }
   });
 
 });
-app.get('/payu/success', function(req, res) {
-  payumoney.paymentResponse("143", function(error, response) {
-  if (error) {
-    // Some error
-    console.log("No payment response received.")
-  } else {
-    console.log(response);
-  }
-});
 
-app.get('/payu/failure', function(req, res) {
-  payumoney.paymentResponse("143", function(error, response) {
-  if (error) {
-    // Some error
-    console.log("No payment response received.")
-  } else {
-    console.log(response);
-  }
-});
 
 
 // listen for all incoming requests
