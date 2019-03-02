@@ -198,8 +198,8 @@ app.get('/payment', function(req, res) {
     if (error) {
       // Some error
     } else {
-      fs.writeFile(tid + ".json", json, function(err, paymentData){
-          if (err) console.log(err);
+      // fs.writeFile(tid + ".json", json, function(err, paymentData){
+      //     if (err) console.log(err);
           console.log("Successfully Written to File.");
       });
       // Payment redirection link
