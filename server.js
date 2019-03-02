@@ -32,27 +32,37 @@ app.use(bodyParser.json());
       console.log(req.body.message);
        //WRITE HEREALL CODE THAT IS RESPONSIBLE FOR SENDING EMAI
        const transporter = nodemailer.createTransport({
-          host: 'mail.codingstudio.club',
-          port: 26,
-          auth: {
-              user: 'payrec@codingstudio.club',
-              pass: 'payrecsih'
-          }
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'ford21@ethereal.email',
+        pass: 'JWKbUa2GerSwY7x9nt'
+    }
 });
+//        const transporter = nodemailer.createTransport({
+//           host: 'codingstudio.club',
+//           port: 465,
+//           auth: {
+//               user: 'payrec@codingstudio.club',
+//               pass: 'payrecsih'
+//           }
+// });
 
        var mailOptions = {
-       from: 'payrec@codingstudio.club',
+       from: 'ford21@ethereal.email',
        to: 'sanath15swaroop@gmail.com',
        subject: "Notification from PayRec-MSME",
-       html: req.body.message,
+       html: "Dear Sanath Swaroop<br>You've received this mail as a remainder for your Due payment of <b>Rs 25,000</b> that needs to be done by <b>4th March</b>",
 
        }
 
        transporter.sendMail(mailOptions, function(err, res){
        if(err){
            console.log('Mail not sent');
+           console.log(err);
        } else {
            console.log('Mail sent');
+
        }
 
        });
@@ -67,11 +77,13 @@ app.get('/SMS', function(req, res) {
   sendSMS(name,date,amount,pno);
 });
 function sendSMS(name,date,amount,pno){
-let body = "Hello";
-body = "Dear " + name + " Your outstanding amount is Rs " + amount + "and the due date was " + date + "Please pay back at the earliest to avoid further issues";
-client.messages
-      .create({from: '+15017122661', body: 'body', to: pno})
-      .then(message => console.log(message.sid));
+  client.messages
+    .create({
+       body: 'Dear Sanath Swaroop, payment of Rs 25,000 Due on 4th march 2019',
+       from: '+12513330297',
+       to: '+918790682297'
+     })
+    .then(message => console.log(message.sid));
 }
 
 //send whatsapp messages
@@ -151,9 +163,9 @@ function makeCall(name,date,amount,pno){
 
   client.calls
         .create({
-           url: 'https://sanathswaroop.com/call.xml',
+           url: ngrok + '/call.xml',
            to: '+919392848111',
-           from: '+918790682297'
+           from: '+12513330297'
          })
         .then(call => console.log(call.sid));
 };
