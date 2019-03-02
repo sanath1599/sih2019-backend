@@ -6,7 +6,7 @@ let MERCHANT_KEY="5jJbQJR3";
 let MERCHANT_SALT ="xIAnuW1WTh";
 let AUTHORIZATION_HEADER = "SNHz/vr+Dh+SmdrTEGDhF7DLSmpej6DiqQRNH9AdRow="
 var request = require('request');
-let ngrok = "https://47fd2720.ngrok.io"
+let ngrok = "https://sanathswaroop.com"
 
 
 var nodemailer = require('nodemailer');
@@ -151,7 +151,7 @@ function makeCall(name,date,amount,pno){
 
   client.calls
         .create({
-           url: ngrok + '/call.xml',
+           url: 'https://sanathswaroop.com/call.xml',
            to: '+919392848111',
            from: '+918790682297'
          })
