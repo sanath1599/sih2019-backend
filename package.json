@@ -13,14 +13,18 @@
     "body-parser": "^1.18.3",
     "curl-request": "^1.1.1",
     "express": "^4.16.4",
+    "express-static": "^1.2.5",
     "jsontoxml": "^1.0.1",
     "knex": "^0.16.3",
+    "mongoose": "^5.4.16",
     "mysql": "^2.16.0",
     "nodemailer": "^5.1.1",
     "openurl": "^1.1.1",
     "payumoney-node": "^2.0.1",
     "pg": "^7.8.1",
-    "requests": "^0.2.2"
+    "q": "^1.5.1",
+    "requests": "^0.2.2",
+    "web-push": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

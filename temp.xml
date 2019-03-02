@@ -1,1 +1,1 @@
-<Response><Say voice="alice">sanath</Say><Say voice="alice">your pending loan amount is Rupees</Say><Say voice="alice">897</Say><Say voice="alice">and due date is</Say><Say voice="alice">10th February</Say></Response>
+<Response><Say voice="alice"/><Say voice="alice">your pending loan amount is Rupees</Say><Say voice="alice"/><Say voice="alice">and due date is</Say><Say voice="alice"/></Response>

@@ -6,18 +6,22 @@ let MERCHANT_KEY="5jJbQJR3";
 let MERCHANT_SALT ="xIAnuW1WTh";
 let AUTHORIZATION_HEADER = "SNHz/vr+Dh+SmdrTEGDhF7DLSmpej6DiqQRNH9AdRow="
 var request = require('request');
+let ngrok = "https://47fd2720.ngrok.io"
+
 
 var nodemailer = require('nodemailer');
 var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
+var cors = require('cors');
+app.use(cors());
 var jsonxml = require('jsontoxml');
 var fs = require('fs');
 payumoney.setKeys(MERCHANT_KEY, MERCHANT_SALT, AUTHORIZATION_HEADER);
 payumoney.isProdMode(false);
 
-app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(bodyParser.json());
 // define a route that will send email
    app.post('/send-email', function(req, res) {
@@ -26,20 +30,20 @@ app.use(bodyParser.json());
       var body  = req.body;
 
       console.log(req.body.message);
-       //WRITE HERE ALL CODE THAT IS RESPONSIBLE FOR SENDING EMAI
+       //WRITE HEREALL CODE THAT IS RESPONSIBLE FOR SENDING EMAI
        const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'pietro.hand27@ethereal.email',
-        pass: 'CweD68jDktWrdH3jGg'
-    }
+          host: 'mail.codingstudio.club',
+          port: 26,
+          auth: {
+              user: 'payrec@codingstudio.club',
+              pass: 'payrecsih'
+          }
 });
 
        var mailOptions = {
-       from: 'pietro.hand27@ethereal.email',
-       to: 'sanath@gmail.com',
-       subject: "HELLO",
+       from: 'payrec@codingstudio.club',
+       to: 'sanath15swaroop@gmail.com',
+       subject: "Notification from PayRec-MSME",
        html: req.body.message,
 
        }
@@ -66,7 +70,7 @@ function sendSMS(name,date,amount,pno){
 let body = "Hello";
 body = "Dear " + name + " Your outstanding amount is Rs " + amount + "and the due date was " + date + "Please pay back at the earliest to avoid further issues";
 client.messages
-      .create({from: '+15017122661', body: 'body', to: '+15558675310'})
+      .create({from: '+15017122661', body: 'body', to: pno})
       .then(message => console.log(message.sid));
 }
 
@@ -79,22 +83,41 @@ app.get('/whatsapp', function(req, res) {
   sendWhatsapp(name,date,amount,pno);
 });
 function sendWhatsapp(name,date,amount,pno){
-  var url = 'https://foo.chat-api.com/message?token=83763g87x';
+
   let body = "Hello";
   body = "Dear " + name + " Your outstanding amount is Rs " + amount + "and the due date was " + date + "Please pay back at the earliest to avoid further issues";
 
-  var data = {
-      phone: pno, // Receivers phone
-      body: body, // Сообщение
+request.post('https://www.waboxapp.com/api/send/chat', {
+  json: {
+    token: 'Buy the milk',
+    uid: "919392848111",
+    to:pno,
+    custom_uid:Math.random(),
+    text:body,
+
+  }
+}, (error, res, body) => {
+  if (error) {
+    console.error(error)
+    return
+  }
+  console.log(`statusCode: ${res.statusCode}`)
+  console.log(body)
+})
+  // var url = 'https://eu35.chat-api.com/instance28989/message?token=pjz6rl8nly72l7qx';
+
+  // var data = {
+  //     phone: pno, // Receivers phone
+  //     body: body, // Сообщение
   };
   // Send a request
-  request({
-      url: url,
-      method: "POST",
-      json: data
-  });
+  // request({
+  //     url: url,
+  //     method: "POST",
+  //     json: data
+  // });
 
-}
+
 
 //listen for call events
 app.get('/makecall', function(req, res) {
@@ -128,12 +151,12 @@ function makeCall(name,date,amount,pno){
 
   client.calls
         .create({
-           url: 'https://sanathswaroop.com/call.xml',
-           to: '+918790682297',
-           from: '+919392848111'
+           url: ngrok + '/call.xml',
+           to: '+919392848111',
+           from: '+918790682297'
          })
         .then(call => console.log(call.sid));
-}
+};
 
 
 //Make payments
@@ -163,6 +186,10 @@ app.get('/payment', function(req, res) {
     if (error) {
       // Some error
     } else {
+      fs.writeFile(tid + ".json", json, function(err, paymentData){
+          if (err) console.log(err);
+          console.log("Successfully Written to File.");
+      });
       // Payment redirection link
       require("openurl").open(response)
       console.log(response);
