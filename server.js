@@ -6,7 +6,8 @@ let MERCHANT_KEY="5jJbQJR3";
 let MERCHANT_SALT ="xIAnuW1WTh";
 let AUTHORIZATION_HEADER = "SNHz/vr+Dh+SmdrTEGDhF7DLSmpej6DiqQRNH9AdRow="
 var request = require('request');
-let ngrok = "https://sanathswaroop.com"
+let statusngrok = "https://5c62bb78.ngrok.io";
+let ngrok = "https://sanathswaroop.com";
 
 
 var nodemailer = require('nodemailer');
@@ -35,8 +36,8 @@ app.use(bodyParser.json());
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: 'ford21@ethereal.email',
-        pass: 'JWKbUa2GerSwY7x9nt'
+        user: 'virginia.keebler16@ethereal.email',
+        pass: 'qg6fxMVbpqQHTP5Ctq'
     }
 });
 //        const transporter = nodemailer.createTransport({
@@ -49,10 +50,10 @@ app.use(bodyParser.json());
 // });
 
        var mailOptions = {
-       from: 'ford21@ethereal.email',
+       from: 'virginia.keebler16@ethereal.email',
        to: 'sanath15swaroop@gmail.com',
        subject: "Notification from PayRec-MSME",
-       html: "Dear Sanath Swaroop<br>You've received this mail as a remainder for your Due payment of <b>Rs 25,000</b> that needs to be done by <b>4th March</b>",
+       html: "Dear Sanath Swaroop<br>You've received this mail as a remainder of payment towards <b>codingStudio</b>Please pay it at the earliest to avoid legal charges<br>Thank You<br>Use link to respond: www.codingstudio.club/payrec",
 
        }
 
@@ -79,7 +80,7 @@ app.get('/SMS', function(req, res) {
 function sendSMS(name,date,amount,pno){
   client.messages
     .create({
-       body: 'Dear Sanath Swaroop, payment of Rs 25,000 Due on 4th march 2019',
+       body: 'Dear Sanath Swaroop,You have received this message as a remainder of payment towards codingStudio Please pay it at the earliest to avoid legal charges. Thank You. Use link to respond: www.codingstudio.club/payrec/',
        from: '+12513330297',
        to: '+918790682297'
      })
@@ -157,6 +158,17 @@ function makeCall(name,date,amount,pno){
   fs.writeFile('temp.xml', xml, function(err, data){
       if (err) console.log(err);
       console.log("Successfully Written to File.");
+      meetSMS();
+      inpersonSMS();
+      request.post(
+    statusngrok + '/updatestatus/142322',
+    { json: { response: '2' } },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body);
+        }
+    }
+);
   });
 
   console.log(xml);
@@ -170,7 +182,9 @@ function makeCall(name,date,amount,pno){
         .then(call => console.log(call.sid));
 };
 
-
+app.get('/directions',function(req,res){
+  locationSMS();
+});
 //Make payments
 app.get('/payment', function(req, res) {
   let fname = req.param('fname');
@@ -201,16 +215,55 @@ app.get('/payment', function(req, res) {
       // fs.writeFile(tid + ".json", json, function(err, paymentData){
       //     if (err) console.log(err);
           console.log("Successfully Written to File.");
-      });
+      };
       // Payment redirection link
       require("openurl").open(response)
       console.log(response);
-    }
+
   });
 
 });
 
+function meetSMS(){
+  client.messages
+    .create({
+       body: 'Dear Sanath Swaroop, A meet has been scheduled at 4PM on 3rd March for negotiation between the parties. Attend meed using our portal at www.codingstudio.club/meet.html',
+       from: '+12513330297',
+       to: '+918790682297'
+     })
+    .then(message => console.log(message.sid));
+}
 
+function inpersonSMS(){
+  client.messages
+    .create({
+       body: 'Dear Sanath Swaroop, Please use the link below if you are unable to attend the online meet to schedule a offline meet. www.codingstudio.club/payrec/meet',
+       from: '+12513330297',
+       to: '+918790682297'
+     })
+    .then(message => console.log(message.sid));
+}
+
+function locationSMS(){
+  client.messages
+  .create({
+    body: 'Dear Kaustubh, you have been requested to attend the offline meet to negotiate at location https://maps.app.goo.gl/i/230Al',
+    from :'+12513330297',
+    to: '+918520959114'
+  })
+  .then(message => console.log(message.sid));
+}
+app.get('/meet', function(req, res) {
+  request.post(
+statusngrok + '/updatestatus/142322',
+{ json: { response: '3' } },
+function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        console.log(body);
+    }
+}
+);
+});
 
 // listen for all incoming requests
 app.listen(3000, function(){
